@@ -8,45 +8,68 @@ class App extends Component {
   state = {
     inputValue: undefined,
     isChecked: false,
-    temp: undefined,
-    city: undefined,
-    country: undefined,
-    sunrise: undefined,
-    sunset: undefined,
-    pressure: undefined,
-    error: undefined
+    allValues: {
+      temp: undefined,
+      city: undefined,
+      country: undefined,
+      sunrise: undefined,
+      sunset: undefined,
+      pressure: undefined,
+      error: undefined
+    }
   };
+
   gettingWeather = async e => {
-    let city = this.state.inputValue;
+    e.preventDefault();
+    let city = e.target.city.value;
     if (city) {
       const api_url = await fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
       );
       const data = await api_url.json();
 
-      var sunset = data.sys.sunset;
-      var date = new Date();
-      date.setTime(sunset);
-      var sunset_date = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+      console.log(data.sys.sunset);
+      console.log(data);
+
+      /*SUNSET CALCULATING */
+      let sunset = data.sys.sunset;
+      var sunsetDate = new Date(sunset * 1000);
+      // Hours part from the timestamp
+      var sunsetHours = sunsetDate.getHours();
+      // Minutes part from the timestamp
+      var sunsetMinutes = "0" + sunsetDate.getMinutes();
+      // Seconds part from the timestamp
+      var sunsetSeconds = "0" + sunsetDate.getSeconds();
+      var sunsetDate = sunsetHours + ":" + sunsetMinutes.substr(-2);
+
+      let sunrise = data.sys.sunrise;
+      var sunriseDate = new Date(sunrise * 1000);
+      // Hours part from the timestamp
+      var sunriseHours = sunriseDate.getHours();
+      // Minutes part from the timestamp
+      var sunriseMinutes = "0" + sunriseDate.getMinutes();
+      // Seconds part from the timestamp
+      var sunriseSeconds = "0" + sunriseDate.getSeconds();
+      var sunriseDate = sunriseHours + ":" + sunriseMinutes.substr(-2);
+
+      /*SUNRISE CALCULATING */
 
       this.setState({
-        temp: data.main.temp,
-        city: data.name,
-        country: data.sys.country,
-        sunrise: data.sys.sunrise,
-        sunset: sunset_date,
-        pressure: data.main.pressure,
-        error: undefined
+        allValues: {
+          temp: data.main.temp,
+          city: data.name,
+          country: data.sys.country,
+          sunrise: sunriseDate,
+          sunset: sunsetDate,
+          pressure: data.main.pressure,
+          error: undefined
+        }
       });
     } else {
       this.setState({
-        temp: undefined,
-        city: undefined,
-        country: undefined,
-        sunrise: undefined,
-        sunset: undefined,
-        pressure: undefined,
-        error: "Введите название города!"
+        allValues: {
+          error: "Введите название города!"
+        }
       });
     }
   };
@@ -56,9 +79,6 @@ class App extends Component {
       inputValue: event.target.city.value,
       isChecked: event.target.remember.value
     });
-    this.gettingWeather();
-    console.log(event.target.city.value);
-    console.log(event.target.remember.value);
   };
   toggleChange = () => {
     this.setState({
@@ -73,16 +93,10 @@ class App extends Component {
     return (
       <div className="App">
         <SignInSide
-          handleSubmit={this.handleSubmit}
+          handleSubmit={this.gettingWeather}
           checked={this.state.isChecked}
+          allValues={this.state.allValues}
           changed={this.toggleChange}
-          temp={this.state.temp}
-          city={this.state.city}
-          country={this.state.country}
-          sunrise={this.state.sunrise}
-          sunset={this.state.sunset}
-          pressure={this.state.pressure}
-          error={this.state.error}
         ></SignInSide>
       </div>
     );

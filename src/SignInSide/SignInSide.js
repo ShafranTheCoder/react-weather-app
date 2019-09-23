@@ -48,9 +48,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignInSide = ({ handleSubmit, checked, changed, temp, city, country, sunrise, sunset, pressure, error }) => {
+const SignInSide = ({ handleSubmit, checked, changed, allValues }) => {
   const classes = useStyles();
-
+  const { temp, city, country, sunrise, sunset, pressure, error } = allValues;
+  console.log(allValues, "signSide");
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
