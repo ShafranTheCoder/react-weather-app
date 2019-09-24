@@ -1,0 +1,19 @@
+.links {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 50%;
+  padding-top: 100px;
+}
+.route__links {
+  height: 100vh;
+  font-size: 20px;
+}
+@media screen and (max-width: 599px) {
+  .route__links {
+    display: none;
+  }
+  .links {
+    display: none;
+  }
+}

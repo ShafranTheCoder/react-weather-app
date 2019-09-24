@@ -5,7 +5,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
@@ -15,6 +14,9 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import WeatherInfo from "../WeatherInfo/WeatherInfo";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import "./MainPage.css";
+import WeatherByCityName from "../WeatherByCityName/WeatherByCityName";
 
 /*url(https://source.unsplash.com/featured/?kiev,city) */
 
@@ -26,7 +28,10 @@ const useStyles = makeStyles(theme => ({
     backgroundImage: "linear-gradient(to bottom, #c94b4b, #4b134f)",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
-    backgroundPosition: "center"
+    backgroundPosition: "center",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
   },
   paper: {
     margin: theme.spacing(8, 4),
@@ -48,23 +53,91 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignInSide = ({ handleSubmit, checked, changed, allValues }) => {
+const MainPage = ({ handleSubmit, checked, changed, allValues }) => {
   const classes = useStyles();
-  const { temp, city, country, sunrise, sunset, pressure, error } = allValues;
-  console.log(allValues, "signSide");
+  const { temp, city, humidity, country, sunrise, sunset, pressure, weatherDesc, error } = allValues;
+  console.log(allValues, "mainpage");
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image}>
-        <WeatherInfo
+        <div className="route__links">
+          <Router>
+            <div className="links">
+              <ul>
+                <li>
+                  <Link style={{ color: "white", textDecoration: "none" }} to="/">
+                    Выбрать город
+                  </Link>
+                </li>
+                <li>
+                  <Link style={{ color: "white", textDecoration: "none" }} to="/kiev">
+                    Kiev
+                  </Link>
+                </li>
+                <li>
+                  <Link style={{ color: "white", textDecoration: "none" }} to="/moscow">
+                    Moscow
+                  </Link>
+                </li>
+                <li>
+                  <Link style={{ color: "white", textDecoration: "none" }} to="/new york">
+                    New York
+                  </Link>
+                </li>
+                <li>
+                  <Link style={{ color: "white", textDecoration: "none" }} to="/riga">
+                    Riga
+                  </Link>
+                </li>
+                <li>
+                  <Link style={{ color: "white", textDecoration: "none" }} to="/lviv">
+                    Lviv
+                  </Link>
+                  <li>
+                    <Link style={{ color: "white", textDecoration: "none" }} to="/medellín">
+                      Medellín
+                    </Link>
+                  </li>
+                </li>
+              </ul>
+            </div>
+            <Route
+              exact
+              path="/"
+              render={() => (
+                <WeatherInfo
+                  temp={temp}
+                  city={city}
+                  humidity={humidity}
+                  country={country}
+                  sunrise={sunrise}
+                  sunset={sunset}
+                  pressure={pressure}
+                  weatherDesc={weatherDesc}
+                  error={error}
+                />
+              )}
+            />
+            <Route path="/kiev" render={() => <WeatherByCityName city="kiev" />} />
+            <Route path="/moscow" render={() => <WeatherByCityName city="moscow" />} />
+            <Route path="/new york" render={() => <WeatherByCityName city="new york" />} />
+            <Route path="/riga" render={() => <WeatherByCityName city="riga" />} />
+            <Route path="/lviv" render={() => <WeatherByCityName city="lviv" />} />
+            <Route path="/medellín" render={() => <WeatherByCityName city="medellín" />} />
+          </Router>
+        </div>
+        {/* <WeatherInfo
           temp={temp}
           city={city}
+          humidity={humidity}
           country={country}
           sunrise={sunrise}
           sunset={sunset}
           pressure={pressure}
+          weatherDesc={weatherDesc}
           error={error}
-        ></WeatherInfo>
+        ></WeatherInfo> */}
       </Grid>
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
@@ -105,4 +178,4 @@ const SignInSide = ({ handleSubmit, checked, changed, allValues }) => {
     </Grid>
   );
 };
-export default SignInSide;
+export default MainPage;

@@ -1,13 +1,12 @@
 .weather-info {
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 .weather__desc {
-  width: 35%;
-  min-width: 253px;
+  width: 40%;
+  min-width: 350px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
