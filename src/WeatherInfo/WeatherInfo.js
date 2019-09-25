@@ -40,7 +40,9 @@ const WeatherInfo = ({ city, country, humidity, temp, sunrise, sunset, pressure,
       </p>
       <p className="weather__desc">
         <span className="weather__value">Описание:</span>
-        <span className="weather__value">{weatherDesc}</span>
+        <span className="weather__value" style={{ textAlign: "right" }}>
+          {weatherDesc}
+        </span>
       </p>
     </div>
   ) : (
